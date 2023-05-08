@@ -14,18 +14,8 @@ const [cart,setCart]=useState([]);
     },[])
 
     const handleAddToCart=(product)=>{
-        let newCart=[];
-        const existProduct=cart.find(pd=>pd.id===product.id);
-        if(!existProduct){
-            product.quantity=1;
-            newCart=[...cart,existProduct]
-        }
-        else{
-            const rest=cart.filter(pd=>pd.id!==product.id);
-            existProduct.quantity=existProduct.quantity+1;
-            newCart=[...rest,product]
-        }
-        
+       
+        const newCart=[...cart,product]
         setCart(newCart);
         addToDb(product.id)
     }    
