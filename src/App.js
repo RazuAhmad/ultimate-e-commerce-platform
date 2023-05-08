@@ -1,13 +1,13 @@
 import React from 'react'
 import Navbar from './Components/Navbar/Navbar'
+import Homepage from './Components/Homepage/Homepage'
 
 function App() {
   return (
-    <>
+    <div>
     <Navbar/>
-    {/* <CarouselComponent/> */}
-    <h1>This is what i'm telling </h1>
-    </>
+    <Homepage/>
+    </div>
   )
 }
 
