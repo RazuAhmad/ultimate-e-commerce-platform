@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AllProducts from '../AllProducts/AllProducts';
 import Cart from '../Cart/Cart';
+import { addToDb, getShoppingCart } from '../../fakeDatabase';
 
 function Homepage() {
 const [allProductCollection,setAllProductCollection]=useState([]);
@@ -13,11 +14,40 @@ const [cart,setCart]=useState([]);
     },[])
 
     const handleAddToCart=(product)=>{
-        const newCart = [...cart, product];
+        let newCart=[];
+        const existProduct=cart.find(pd=>pd.id===product.id);
+        if(!existProduct){
+            product.quantity=1;
+            newCart=[...cart,existProduct]
+        }
+        else{
+            const rest=cart.filter(pd=>pd.id!==product.id);
+            existProduct.quantity=existProduct.quantity+1;
+            newCart=[...rest,product]
+        }
+        
         setCart(newCart);
-        console.log("handle add to cart",product);
-        console.log("Adding to cart",cart);
+        addToDb(product.id)
     }    
+
+    useEffect(()=>{
+        const storedCart=getShoppingCart();
+        const savedCart=[];
+
+        for (const id in storedCart) {
+            const addedProduct=allProductCollection.find(product=>product.id===id);
+            
+            if(addedProduct){
+                const quantity=storedCart[id];
+                addedProduct.quantity=quantity;
+                savedCart.push(addedProduct)
+            }
+            
+            }
+
+            setCart(savedCart)
+        
+    },[allProductCollection])
 
   return (
     <div className='grid grid-cols-2 md:grid-cols-5 gap-1 mt-4'>
